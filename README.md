@@ -6,6 +6,7 @@
 
 ## Run the sql
 
+export LD_LIBRARY_PATH=.
 ./xplanner -d ./disk1 -d ./disk2 -d ./disk3  lineitem.schema simple.sql
 
 
