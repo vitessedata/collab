@@ -1,1 +1,1 @@
-select l_partkey, l_suppkey from *.zmp;
+select l_partkey, l_suppkey from lineitem;
