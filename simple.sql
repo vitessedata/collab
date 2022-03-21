@@ -1,1 +1,1 @@
-select l_partkey, l_suppkey from lineitem;
+select l_partkey, l_suppkey from "lineitem*";
