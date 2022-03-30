@@ -203,9 +203,10 @@ typedef void* sssd_t;
 void sssd_final(sssd_t handle);
 
 /**
- * Initialize
+ * Initialize with input device-ID and mount paths.
+ * The format of disk[] should be: "INTEGER_ID:/ABSOLUTE/PATH", e.g. "0:/mnt/disk0"
  */
-sssd_t sssd_init(int ndisk, const char* disk[]);
+sssd_t sssd_init(int ndisk, const char* disk[], char* errmsg, int errsz);
 
 /**
  * Returns the mountpoint of sssd[0], ...
@@ -218,7 +219,7 @@ const char* sssd_mountpoint(sssd_t sssd, int idx);
  *  The task will be queued to run in the future.
  *  Tasks are malloc-ed by caller, and pass to sssd.
  */
-int sssd_submit(sssd_t sssd, task_t* task);
+int sssd_submit(sssd_t sssd, task_t* task, char* errmsg, int errsz);
 
 /**
  *  Await the completion of tasks. Returns #tasks completed, or -1
@@ -238,12 +239,8 @@ int sssd_submit(sssd_t sssd, task_t* task);
  *
  *  If nonblocking is true, this function may return 0.
  */
-int sssd_await(sssd_t sssd, int ntask, task_t* task[], bool status[], int nonblocking = 0);
-
-///** Check the filter condition, return 0 if it is supported by sssd, -1 otherwise
-// *
-// */
-// int sssd_check_filter(sssd_t sssd, std::unique_ptr<expr_t>& filter);
+int sssd_await(
+    sssd_t sssd, int ntask, task_t* task[], bool status[], int nonblocking, char* errmsg, int errsz);
 
 /** Check the filter condition, return true if it is supported by sssd, false otherwise
  *
