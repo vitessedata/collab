@@ -1,0 +1,32 @@
+;;
+;; filter 5 OR conditions. Filtering will NOT be done by sssd.
+;;
+(plan
+ (project (COLUMN (orderkey (var l_orderkey))
+		  (partkey (var l_partkey))
+		  (shipdate (var l_shipdate)))
+	  (filter (or (== (var l_orderkey) (int 166))
+		      (== (var l_orderkey) (int 164))
+		      (== (var l_orderkey) (int 163))
+		      (== (var l_orderkey) (int 194))
+		      (== (var l_orderkey) (int 192)))
+		  (scan (symtab (l_orderkey i64v) 
+				(l_partkey i64v) 
+				(l_suppkey i64v) 
+				(l_linenumber i64v) 
+				(l_quantity fp64v) 
+				(l_extendedprice fp64v) 
+				(l_discount fp64v) 
+				(l_tax fp64v) 
+				(l_returnflag strv) 
+				(l_linestatus strv) 
+				(l_shipdate datev) 
+				(l_commitdate datev) 
+				(l_receiptdate datev) 
+				(l_shipinstruct strv) 
+				(l_shipmode strv) 
+				(l_comment strv) )
+			(path lineitem.xrg)))
+	  ))
+		  
+	 
