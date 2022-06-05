@@ -1,0 +1,28 @@
+-- orig ------
+; max intervalv
+(plan
+ (project (column (c1 (var gvar.0))
+		  (c2 (var gfunc.0)))
+	  (groupby (bucket (var bytea-a))
+		   (function (max (var bytea-b)))
+		   (scan (symtab (int8-a i8v) (int8-b i8v)
+				 (int16-a i16v) (int16-b i16v)
+				 (int32-a i32v) (int32-b i32v)
+				 (int64-a i64v) (int64-b i64v)
+				 (fp32-a fp32v) (fp32-b fp32v)
+				 (fp64-a fp64v) (fp64-b fp64v)
+				 (bytea-a strv) (bytea-b strv)
+				 (interval-a intervalv) (interval-b intervalv)
+				 (date-a datev) (date-b datev)
+				 (time-a timev) (time-b timev)
+				 (timestamp-a timestampv) (timestamp-b timestampv))
+			 (path test-agg.xrg)))
+	  ))
+
+
+-- result --------
+str0|str4
+str3|str3
+str2|str2
+str1|str1
+str4|str4

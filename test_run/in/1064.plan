@@ -1,0 +1,26 @@
+;;
+;; GROUPBY a boolean value
+;;
+(plan
+ (project (column (c0 (var gvar.0)) (c1 (var gfunc.0))) 
+	  (groupby (bucket (>= (real 0.04) (var l_tax)))
+		   (function (count (int 1)))
+		   (scan (symtab (l_orderkey i64v) 
+					 (l_partkey i64v) 
+					 (l_suppkey i64v) 
+					 (l_linenumber i64v) 
+					 (l_quantity fp64v) 
+					 (l_extendedprice fp64v) 
+					 (l_discount fp64v) 
+					 (l_tax fp64v) 
+					 (l_returnflag strv) 
+					 (l_linestatus strv) 
+					 (l_shipdate datev) 
+					 (l_commitdate datev) 
+					 (l_receiptdate datev) 
+					 (l_shipinstruct strv) 
+					 (l_shipmode strv) 
+					 (l_comment strv))
+				 (path lineitem.xrg)))
+	  ))
+

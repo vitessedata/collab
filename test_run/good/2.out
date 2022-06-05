@@ -1,0 +1,30 @@
+-- orig ------
+(plan
+ (project (COLUMN (orderkey (var l_orderkey))
+		  (partkey (var l_partkey))
+		  (shipdate (var l_shipdate)))
+	  (filter (== (var l_shipdate) (date 1996-01-29))
+		  (scan (symtab (l_orderkey i64v) 
+				(l_partkey i64v) 
+				(l_suppkey i64v) 
+				(l_linenumber i64v) 
+				(l_quantity fp64v) 
+				(l_extendedprice fp64v) 
+				(l_discount fp64v) 
+				(l_tax fp64v) 
+				(l_returnflag strv) 
+				(l_linestatus strv) 
+				(l_shipdate datev) 
+				(l_commitdate datev) 
+				(l_receiptdate datev) 
+				(l_shipinstruct strv) 
+				(l_shipmode strv) 
+				(l_comment strv) )
+			(path lineitem.xrg)))
+	  ))
+		  
+	 
+
+
+-- result --------
+1|63700|1996-01-29

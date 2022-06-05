@@ -1,0 +1,25 @@
+-- sql --------
+select l_returnflag, 
+	l_linestatus,
+	sum(l_quantity) as sum_qty, 
+	sum(l_extendedprice) as sum_base_price, 
+	sum(l_extendedprice * (1 - l_discount)) as sum_disc_price, 
+	sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge, 
+	sum(l_quantity) / count(l_quantity) as avg_qty, 
+	sum(l_extendedprice) / count(l_extendedprice) /*avg(l_extendedprice)*/ as avg_price, 
+	sum(l_discount)/count(l_discount) /*(avg(l_discount)*/ as avg_disc, 
+	count(*) as count_order 
+from lineitem 
+where l_shipdate <= date '1998-12-01' - interval '112 day' 
+group by l_returnflag, l_linestatus;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var gvar.0)) (c1 (var gvar.1)) (sum_qty (var gfunc.0)) (sum_base_price (var gfunc.1)) (sum_disc_price (var gfunc.2)) (sum_charge (var gfunc.3)) (avg_qty (/ (var gfunc.0) (var gfunc.4))) (avg_price (/ (var gfunc.1) (var gfunc.5))) (avg_disc (/ (var gfunc.6) (var gfunc.7))) (count_order (var gfunc.8))) (groupby (bucket (var l_returnflag) (var l_linestatus)) (function (sum (var l_quantity)) (sum (var l_extendedprice)) (sum (* (var l_extendedprice) (- (int 1) (var l_discount)))) (sum (* (* (var l_extendedprice) (- (int 1) (var l_discount))) (+ (int 1) (var l_tax)))) (count (var l_quantity)) (count (var l_extendedprice)) (sum (var l_discount)) (count (var l_discount)) (count (int 1))) (filter (<= (var l_shipdate) (- (date 1998-12-01) (interval "112 day"))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg))))))
+
+
+-- result --------
+N|O|2620.00|3835762.27|3651143.76|3799689.40|25.94|37977.84|0.05|101
+A|F|1350.00|1913270.38|1810322.04|1883811.54|25.96|36793.66|0.05|52
+R|F|1099.00|1556684.01|1473551.00|1523983.13|25.56|36201.95|0.05|43

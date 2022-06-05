@@ -1,0 +1,35 @@
+-- orig ------
+;; group by (linenumber + 100), project 
+(plan
+ (project (column (proj1  (* (int 1000) (var gfunc.0)))
+		  (proj2  (* (int 1000) (var gvar.0))))
+	  (groupby (bucket (+ (var l_linenumber) (int 100)))
+		   (function (count (int 1)))
+		   (scan (symtab (l_orderkey i64v) 
+				 (l_partkey i64v) 
+				 (l_suppkey i64v) 
+				 (l_linenumber i64v) 
+				 (l_quantity fp64v) 
+				 (l_extendedprice fp64v) 
+				 (l_discount fp64v) 
+				 (l_tax fp64v) 
+				 (l_returnflag strv) 
+				 (l_linestatus strv) 
+				 (l_shipdate datev) 
+				 (l_commitdate datev) 
+				 (l_receiptdate datev) 
+				 (l_shipinstruct strv) 
+				 (l_shipmode strv) 
+				 (l_comment strv))
+			 (path lineitem.xrg))
+		   )))
+
+
+-- result --------
+50000|101000
+29000|104000
+21000|105000
+38000|103000
+17000|106000
+41000|102000
+4000|107000

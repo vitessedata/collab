@@ -1,0 +1,30 @@
+-- orig ------
+; sum dec64v
+(plan
+ (project (column (c1 (var gvar.0))
+		  (c2 (var gfunc.0)))
+	  (groupby (bucket (var bytea-a))
+		   (function (sum (var dec64-a)))
+		   (scan (symtab (int8-a i8v) (int8-b i8v)
+				 (int16-a i16v) (int16-b i16v)
+				 (int32-a i32v) (int32-b i32v)
+				 (int64-a i64v) (int64-b i64v)
+				 (fp32-a fp32v) (fp32-b fp32v)
+				 (fp64-a fp64v) (fp64-b fp64v)
+				 (bytea-a strv) (bytea-b strv)
+				 (interval-a intervalv) (interval-b intervalv)
+				 (date-a datev) (date-b datev)
+				 (time-a timev) (time-b timev)
+				 (timestamp-a timestampv) (timestamp-b timestampv)
+    				 (dec64-a dec64v 12 5) (dec64-b dec64v 18 6)
+    				 (dec128-a dec128v 20 8) (dec128-b dec128v 22 9))
+			 (path test-agg.xrg)))
+	  ))
+
+
+-- result --------
+str0|666.66600
+str3|1333.33280
+str2|1777.77600
+str1|1666.66500
+str4|77.77800

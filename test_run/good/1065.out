@@ -1,0 +1,20 @@
+-- orig ------
+(plan
+ (project (COLUMN (age (var age))
+		  (sex (var sex)))
+	  (filter (OR (== (var sex) (str "m")) (< (var age) (int 5)))
+		  (scan (symtab (age i8v) 
+				(sex strv) )
+			(path age_sex.xrg)))
+	  ))
+)
+
+
+-- result --------
+1|m
+2|f
+3|m
+4|f
+5|m
+7|m
+9|m

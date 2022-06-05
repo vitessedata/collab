@@ -1,0 +1,22 @@
+;; test MAX group by linenumber
+(plan
+ (groupby (bucket (var l_linenumber))
+	  (function (max (var l_partkey)))
+	  (scan (symtab (l_orderkey i64v) 
+			(l_partkey i64v) 
+			(l_suppkey i64v) 
+			(l_linenumber i64v) 
+			(l_quantity fp64v) 
+			(l_extendedprice fp64v) 
+			(l_discount fp64v) 
+			(l_tax fp64v) 
+			(l_returnflag strv) 
+			(l_linestatus strv) 
+			(l_shipdate datev) 
+			(l_commitdate datev) 
+			(l_receiptdate datev) 
+			(l_shipinstruct strv) 
+			(l_shipmode strv) 
+			(l_comment strv))
+		(path lineitem.xrg))
+

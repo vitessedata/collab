@@ -1,0 +1,65 @@
+-- orig ------
+;;
+;; filter 4 AND conditions. Filtering will be done by sssd.
+;;
+(plan
+ (project (COLUMN (orderkey (var l_orderkey))
+		  (partkey (var l_partkey))
+		  (shipdate (var l_shipdate)))
+	  (filter (AND (>= (var l_orderkey) (int 160))
+		       (<= (var l_orderkey) (int 194))
+		       (!= (var l_orderkey) (int 164))
+		       (!= (var l_orderkey) (int 192)))
+		  (scan (symtab (l_orderkey i64v) 
+				(l_partkey i64v) 
+				(l_suppkey i64v) 
+				(l_linenumber i64v) 
+				(l_quantity fp64v) 
+				(l_extendedprice fp64v) 
+				(l_discount fp64v) 
+				(l_tax fp64v) 
+				(l_returnflag strv) 
+				(l_linestatus strv) 
+				(l_shipdate datev) 
+				(l_commitdate datev) 
+				(l_receiptdate datev) 
+				(l_shipinstruct strv) 
+				(l_shipmode strv) 
+				(l_comment strv) )
+			(path lineitem.xrg)))
+	  ))
+		  
+	 
+
+
+-- result --------
+160|14785|1997-03-11
+160|86382|1997-02-18
+160|20080|1997-01-31
+161|102810|1994-12-13
+162|189288|1995-09-02
+163|167545|1997-09-19
+163|120702|1997-11-11
+163|36818|1997-12-26
+163|192642|1997-11-17
+163|126090|1997-12-18
+163|190825|1997-09-27
+165|33175|1993-03-29
+165|161627|1993-02-27
+165|58520|1993-04-10
+165|139190|1993-02-20
+165|155084|1993-04-27
+166|64888|1995-11-16
+166|166366|1995-11-09
+166|99652|1995-11-13
+166|45027|1995-12-30
+167|101171|1993-02-19
+167|171555|1993-05-01
+193|92638|1993-09-17
+193|153954|1993-11-22
+193|93878|1993-08-21
+194|2594|1992-05-24
+194|183523|1992-04-30
+194|65994|1992-05-07
+194|145146|1992-05-21
+194|56176|1992-07-06

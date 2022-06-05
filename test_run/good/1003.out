@@ -1,0 +1,35 @@
+-- orig ------
+;; group by linenumber and SUM a multiplication expr
+(plan
+ (project (column (c1 (var gvar.0))
+		  (c2 (var gfunc.0)))
+	  (groupby (bucket (var l_linenumber))
+		   (function (sum (* (var l_partkey) (var l_partkey))))
+		   (scan (symtab (l_orderkey i64v) 
+				 (l_partkey i64v) 
+				 (l_suppkey i64v) 
+				 (l_linenumber i64v) 
+				 (l_quantity fp64v) 
+				 (l_extendedprice fp64v) 
+				 (l_discount fp64v) 
+				 (l_tax fp64v) 
+				 (l_returnflag strv) 
+				 (l_linestatus strv) 
+				 (l_shipdate datev) 
+				 (l_commitdate datev) 
+				 (l_receiptdate datev) 
+				 (l_shipinstruct strv) 
+				 (l_shipmode strv) 
+				 (l_comment strv) )
+			 (path lineitem.xrg)))
+	  ))
+
+
+-- result --------
+5|211061928600
+1|534730033328
+4|295664179041
+7|72538246783
+3|445725611066
+6|209430650150
+2|743604705157

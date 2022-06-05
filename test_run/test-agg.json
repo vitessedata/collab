@@ -1,0 +1,17 @@
+[
+    {"name": "int8-a", "type": "int8"}, {"name": "int8-b", "type": "int8"},
+    {"name": "int16-a", "type": "int16"}, {"name": "int16-b", "type": "int16"},
+    {"name": "int32-a", "type": "int32"}, {"name": "int32-b", "type": "int32"},
+    {"name": "int64-a", "type": "int64"}, {"name": "int64-b", "type": "int64"},
+    {"name": "fp32-a", "type": "fp32"}, {"name": "fp32-b", "type": "fp32"},
+    {"name": "fp64-a", "type": "fp64"}, {"name": "fp64-b", "type": "fp64"},
+    {"name": "bytea-a", "type": "bytea"}, {"name": "bytea-b", "type": "bytea"},
+    {"name": "interval-a", "type": "interval"}, {"name": "interval-b", "type": "interval"},
+    {"name": "date-a", "type": "date"}, {"name": "date-b", "type": "date"},
+    {"name": "time-a", "type": "time"}, {"name": "time-b", "type": "time"},
+    {"name": "timestamp-a", "type": "timestamp"}, {"name": "timestamp-b", "type": "timestamp"},
+    {"name": "dec64-a", "type": "decimal", "precision" : 12, "scale" : 5}, 
+    {"name": "dec64-b", "type": "decimal", "precision" : 18, "scale" : 6},
+    {"name": "dec128-a", "type": "decimal", "precision" : 20, "scale" : 8}, 
+    {"name": "dec128-b", "type": "decimal", "precision" : 22, "scale" : 9}
+]

@@ -1,0 +1,9 @@
+(plan
+ (project (COLUMN (age (var age))
+		  (sex (var sex)))
+	  (filter (OR (== (var sex) (str "m")) (< (var age) (int 5)))
+		  (scan (symtab (age i8v) 
+				(sex strv) )
+			(path age_sex.xrg)))
+	  ))
+)

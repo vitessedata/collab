@@ -1,0 +1,48 @@
+-- orig ------
+;; Q1
+;; SELECT l_returnflag,l_linestatus,SUM(l_quantity),SUM(l_extendedprice),SUM(l_extendedprice * (1.000000 - l_discount)),
+;;	SUM((l_extendedprice * (1.000000 - l_discount)) * (1.000000 + l_tax)),SUM(l_quantity),
+;;	COUNT(*),SUM(l_extendedprice),COUNT(*),SUM(l_discount),
+;;	COUNT(*),COUNT(*) 
+;;	FROM "lineitem*" 
+;;	WHERE l_shipdate <= '1998-09-02' 
+;;	GROUP BY l_returnflag,l_linestatus
+(plan
+ (project (column (c1 (var gvar.0))
+		  (c2 (var gvar.1))
+		  (c3 (var gfunc.0))
+		  (c4 (var gfunc.1))
+		  (c5 (var gfunc.2))
+		  (c6 (var gfunc.3)))
+	  (groupby (bucket (var l_returnflag) (var l_linestatus))
+		   (function (sum (var l_quantity)) 
+			     (sum (var l_extendedprice))
+			     (sum (* (var l_extendedprice) (- (int 1) (var l_discount))))
+			     (sum (* (* (var l_extendedprice)
+					(- (int 1) (var l_discount)))
+				     (+ (int 1) (var l_tax)))))
+		   (scan (symtab (l_orderkey i64v) 
+				 (l_partkey i64v) 
+				 (l_suppkey i64v) 
+				 (l_linenumber i64v) 
+				 (l_quantity fp64v) 
+				 (l_extendedprice fp64v) 
+				 (l_discount fp64v) 
+				 (l_tax fp64v) 
+				 (l_returnflag strv) 
+				 (l_linestatus strv) 
+				 (l_shipdate datev) 
+				 (l_commitdate datev) 
+				 (l_receiptdate datev) 
+				 (l_shipinstruct strv) 
+				 (l_shipmode strv) 
+				 (l_comment strv))
+			 (path lineitem.xrg)))
+	  ))
+
+
+
+-- result --------
+N|O|2707.00|3981962.29|3791156.59|3947432.89
+A|F|1350.00|1913270.38|1810322.04|1883811.54
+R|F|1099.00|1556684.01|1473551.00|1523983.13
