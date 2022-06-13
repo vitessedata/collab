@@ -1,0 +1,12 @@
+-- sql --------
+-- test single count(*)
+select count(*) from lineitem;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var gfunc.0))) (groupby (function (count (int 1))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg)))))
+
+
+-- result --------
+200

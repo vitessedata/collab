@@ -1,0 +1,28 @@
+;;cktan=# select * from t;
+;; i | j
+;;---+---
+;; 1 | 1
+;; 1 |
+;; 2 | 2
+;; 2 | 3
+;; 2 | 4
+;;(5 rows)
+;;
+;;cktan=# select i, count(j) from t group by i;
+;; i | count
+;;---+-------
+;; 2 |     3
+;; 1 |     1
+;;(2 rows)
+;;
+
+(plan 
+   (project (column (c0 (var gvar.0)) 
+                    (c1 (var gfunc.0))) 
+            (groupby (bucket (var i)) 
+                     (function (count (var j))) 
+                     (scan (symtab (i i8v) (j i8v)) 
+	                   (path t1067.xrg))
+            )
+   )
+)

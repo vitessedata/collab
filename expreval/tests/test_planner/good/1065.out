@@ -1,0 +1,17 @@
+-- sql --------
+select age, sex from t1065 where sex == 'm' or age < 5;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var age)) (c1 (var sex))) (filter (or (== (var sex) (str m)) (< (var age) (int 5))) (scan (symtab (age i8v) (sex strv)) (path t1065.xrg)))))
+
+
+-- result --------
+1|m
+2|f
+3|m
+4|f
+5|m
+7|m
+9|m

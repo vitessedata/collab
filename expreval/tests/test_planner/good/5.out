@@ -1,0 +1,15 @@
+-- sql --------
+select * from lineitem limit 5;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var l_orderkey)) (c1 (var l_partkey)) (c2 (var l_suppkey)) (c3 (var l_lineitem)) (c4 (var l_quantity)) (c5 (var l_extendedprice)) (c6 (var l_discount)) (c7 (var l_tax)) (c8 (var l_returnflag)) (c9 (var l_linestatus)) (c10 (var l_shipdate)) (c11 (var l_commitdate)) (c12 (var l_receiptdate)) (c13 (var l_shipinstruct)) (c14 (var l_shipmode)) (c15 (var l_comment))) (LIMIT 5 (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg)))))
+
+
+-- result --------
+1|155190|7706|1|17.00|21168.23|0.04|0.02|N|O|1996-03-13|1996-02-12|1996-03-22|DELIVER IN PERSON|TRUCK|blithely regular ideas caj
+1|67310|7311|2|36.00|45983.16|0.09|0.06|N|O|1996-04-12|1996-02-28|1996-04-20|TAKE BACK RETURN|MAIL|slyly bold pinto beans detect s
+1|63700|3701|3|8.00|13309.60|0.10|0.02|N|O|1996-01-29|1996-03-05|1996-01-31|TAKE BACK RETURN|REG AIR|deposits wake furiously dogged,
+1|2132|4633|4|28.00|28955.64|0.09|0.06|N|O|1996-04-21|1996-03-30|1996-05-16|NONE|AIR|even ideas haggle. even, bold reque
+1|24027|1534|5|24.00|22824.48|0.10|0.04|N|O|1996-03-30|1996-03-14|1996-04-01|NONE|FOB|carefully final gr

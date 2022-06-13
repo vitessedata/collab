@@ -1,0 +1,18 @@
+-- cktan=# select * from t;
+--  i
+-- ---
+--  1
+--  1
+--  1
+-- 
+-- 
+-- 
+-- (6 rows)
+-- 
+-- cktan=#  select i, count(*), count(i) from t group by i;
+--  i | count | count
+-- ---+-------+-------
+--    |     3 |     0
+--  1 |     3 |     3
+-- (2 rows)
+select i, count(*), count(i) from t1066 group by i;

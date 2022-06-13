@@ -1,0 +1,35 @@
+-- orig ------
+;; cktan=# select * from t;
+;;  i
+;; ---
+;;  1
+;;  1
+;;  1
+;; 
+;; 
+;; 
+;; (6 rows)
+;; 
+;; cktan=#  select i, count(*), count(i) from t group by i;
+;;  i | count | count
+;; ---+-------+-------
+;;    |     3 |     0
+;;  1 |     3 |     3
+;; (2 rows)
+(plan 
+   (project 
+      (column (c1 (var gvar.0)) 
+	      (c2 (var gfunc.0))
+	      (c3 (var gfunc.1)))
+      (groupby (bucket (var i)) 
+               (function (count (int 1)) (count (var i)))
+               (scan (symtab (i i8v)) 
+                     (path t1066.xrg))
+      )
+   )
+)
+
+
+-- result --------
+1|3|3
+NULL|3|0

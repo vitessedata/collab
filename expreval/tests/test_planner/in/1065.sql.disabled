@@ -1,0 +1,1 @@
+select age, sex from t1065 where sex == 'm' or age < 5;

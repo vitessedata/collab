@@ -1,0 +1,43 @@
+-- sql --------
+-- simple query
+select l_returnflag, l_linestatus, l_orderkey  
+from lineitem
+where 30 <= l_orderkey and l_orderkey <= 40;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var l_returnflag)) (c1 (var l_linestatus)) (c2 (var l_orderkey))) (filter (and (<= (int 30) (var l_orderkey)) (<= (var l_orderkey) (int 40))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg)))))
+
+
+-- result --------
+N|O|32
+N|O|32
+N|O|32
+N|O|32
+N|O|32
+N|O|32
+A|F|33
+A|F|33
+A|F|33
+R|F|33
+N|O|34
+N|O|34
+N|O|34
+N|O|35
+N|O|35
+N|O|35
+N|O|35
+N|O|35
+N|O|35
+N|O|36
+A|F|37
+A|F|37
+A|F|37
+N|O|38
+N|O|39
+N|O|39
+N|O|39
+N|O|39
+N|O|39
+N|O|39

@@ -1,0 +1,25 @@
+-- sql --------
+-- simple OR query. This should produce 
+-- l_orderkey == 1 or 194.
+select l_returnflag, l_linestatus, l_orderkey  
+from lineitem
+where l_orderkey <= 1 or l_orderkey >= 194;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var l_returnflag)) (c1 (var l_linestatus)) (c2 (var l_orderkey))) (filter (or (<= (var l_orderkey) (int 1)) (>= (var l_orderkey) (int 194))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg)))))
+
+
+-- result --------
+N|O|1
+N|O|1
+N|O|1
+N|O|1
+N|O|1
+N|O|1
+R|F|194
+R|F|194
+A|F|194
+R|F|194
+R|F|194

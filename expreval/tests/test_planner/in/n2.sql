@@ -1,0 +1,3 @@
+-- bad from clause
+select l_returnflag, l_linestatus, l_orderkey  
+from 30 <= l_orderkey and l_orderkey <= 40;
