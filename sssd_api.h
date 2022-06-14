@@ -10,6 +10,7 @@
 #include "xrg.h"
 
 namespace sssd_engine {
+
 enum expr_type_t {
     EXPR_UNKNOWN,
     EXPR_LIT_FIELD, // the column data
@@ -35,12 +36,12 @@ enum expr_type_t {
     EXPR_CAST_I128,
     EXPR_CAST_FP32,
     EXPR_CAST_FP64,
-    EXPR_CAST_BYTEA,
     EXPR_CAST_DEC64,
     EXPR_CAST_DEC128,
     EXPR_CAST_DATE,
     EXPR_CAST_TIME,
     EXPR_CAST_TIMESTAMP,
+    EXPR_CAST_INTERVAL,
     // op expects the same types on LHS/RHS, except (timestamp x interval)
     EXPR_OP_ADD,   // A+B
     EXPR_OP_SUB,   // A-B
@@ -54,6 +55,7 @@ enum expr_type_t {
     EXPR_OP_AND,
     EXPR_OP_OR,
     EXPR_OP_IN,
+    EXPR_OP_NOT,
     // compare expects the same types on LHS/RHS
     EXPR_CMP_EQ,
     EXPR_CMP_LT,
@@ -61,7 +63,13 @@ enum expr_type_t {
     EXPR_CMP_GT,
     EXPR_CMP_GE,
     EXPR_CMP_NE,
+    // only support pattern %abc%, %abc, abc%, abc. A percent sign (%) matches any sequence of zero or more characters.
+    EXPR_CMP_LIKE,
 };
+
+// XXX: must be the same order in expr_type_t above
+// the compiler will allocate a read-only segment for saving the array of string
+extern const char* expr_type_str[];
 
 class expr_t {
    public:
@@ -116,19 +124,10 @@ for Field < '2020-01-01' and the field is a date
 
 for Field < '2020-01-01' and the field is a timestamp
 
-       (EXPR_CMP_LT
-           (EXPR_CAST_DATE (EXPR_LIT_FIELD))
-           (EXPR_LIT_DATE 2020-01-01))
-
-
-OR   ????????????
-
         (EXPR_CMP_LT
                 (EXPR_LIT_FIELD)
                 (EXPR_CAST_TIMESTAMP
                         (EXPR_LIT_DATE 2020-01-01)))
-
-
 
 for field between 1 and 10 where field is an int32
 
@@ -239,8 +238,7 @@ int sssd_submit(sssd_t sssd, task_t* task, char* errmsg, int errsz);
  *
  *  If nonblocking is true, this function may return 0.
  */
-int sssd_await(
-    sssd_t sssd, int ntask, task_t* task[], bool status[], int nonblocking, char* errmsg, int errsz);
+int sssd_await(sssd_t sssd, int ntask, task_t* task[], bool status[], int nonblocking, char* errmsg, int errsz);
 
 /** Check the filter condition, return true if it is supported by sssd, false otherwise
  *
