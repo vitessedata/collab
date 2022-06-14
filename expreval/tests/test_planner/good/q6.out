@@ -5,14 +5,14 @@ from
   lineitem
 where
   l_shipdate >= '1994-01-01'::date
-  and l_shipdate < '1995-01-01'::date
+  and l_shipdate < '1995-01-01'
   and l_discount between 0.05 and 0.07
   and l_quantity < 24
 
 
 
 -- plan --------
-(plan (project (column (revenue (var gfunc.0))) (groupby (function (sum (* (var l_extendedprice) (var l_discount)))) (filter (and (>= (var l_shipdate) (date 1994-01-01)) (< (var l_shipdate) (date 1995-01-01)) (and (<= (real 0.050000) (var l_discount)) (<= (var l_discount) (real 0.070000))) (< (var l_quantity) (int 24))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg))))))
+(plan (project (column (revenue (var gfunc.0))) (groupby (function (sum (* (var l_extendedprice) (var l_discount)))) (filter (and (>= (var l_shipdate) (date 1994-01-01)) (< (var l_shipdate) (str 1995-01-01)) (and (<= (real 0.050000) (var l_discount)) (<= (var l_discount) (real 0.070000))) (< (var l_quantity) (int 24))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg))))))
 
 
 -- result --------

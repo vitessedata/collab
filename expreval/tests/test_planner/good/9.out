@@ -1,0 +1,21 @@
+-- sql --------
+select ((l_tax + 1) * 20), l_tax, count(*)
+from lineitem
+group by l_tax;
+
+
+
+-- plan --------
+(plan (project (column (c0 (* (+ (var gvar.0) (int 1)) (int 20))) (c1 (var gvar.0)) (c2 (var gfunc.0))) (groupby (bucket (var l_tax)) (function (count (int 1))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg)))))
+
+
+-- result --------
+21.20|0.06|24
+21.60|0.08|20
+21.40|0.07|21
+20.80|0.04|23
+20.20|0.01|20
+20.60|0.03|18
+20.00|0.00|24
+20.40|0.02|26
+21.00|0.05|24
