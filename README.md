@@ -9,6 +9,3 @@
 
 LD_LIBRARY_PATH=.
 ./xplanner -d <absolute_path>/disk1 -d <absolute_path>/disk2 -d <absolute_path>/disk3  lineitem.schema simple.sql
-
-
-
