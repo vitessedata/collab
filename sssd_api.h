@@ -1,6 +1,8 @@
 #ifndef SSSD_API_H
 #define SSSD_API_H
 
+#define LIBSSSD_ENGINE_VERSION 1
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -156,7 +158,8 @@ typedef enum {
     SSSD_DEV_ERR = 2,
     SSSD_MEM_ERR = 3,
     SSSD_FILE_ERR = 4,
-    SSSD_FILTER_NOTDO = 5
+    SSSD_FILTER_NOTDO = 5,
+    SSSD_VER_ERR = 6
 } sssd_rc_t;
 
 class request_t {
@@ -205,7 +208,7 @@ void sssd_final(sssd_t handle);
  * Initialize with input device-ID and mount paths.
  * The format of disk[] should be: "INTEGER_ID:/ABSOLUTE/PATH", e.g. "0:/mnt/disk0"
  */
-sssd_t sssd_init(int ndisk, const char* disk[], char* errmsg, int errsz);
+sssd_t sssd_init(int ndisk, const char* disk[], const int version, char* errmsg, int errsz);
 
 /**
  * Returns the mountpoint of sssd[0], ...
@@ -240,10 +243,18 @@ int sssd_submit(sssd_t sssd, task_t* task, char* errmsg, int errsz);
  */
 int sssd_await(sssd_t sssd, int ntask, task_t* task[], bool status[], int nonblocking, char* errmsg, int errsz);
 
-/** Check the filter condition, return true if it is supported by sssd, false otherwise
+/**
+ * Check the filter condition, return true if it is supported by sssd, false otherwise
  *
  */
 bool sssd_is_expr_supported(sssd_t sssd, int ptyp, int ltyp, const expr_t* filter);
+
+/**
+ * Check the library versiohn
+ */
+inline int sssd_version() {
+    return LIBSSSD_ENGINE_VERSION;
+}
 
 } // end of namespace
 #endif
