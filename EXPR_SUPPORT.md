@@ -15,9 +15,9 @@ notion to elaborate the expressions currently supported in SmartSSD acceleration
 ## String Variable
 
 * Comparison includes `==` and `LIKE`.
-* Up to 4 `==` comparisons, each with literal no longer than 64B.
+* Up to 8 `==` comparisons, each with literal no longer than 64B.
   Multiple comparisons can only be combined with `OR`.
-  Alternatively, the expression can be `IN` with up to 4 literals, each within 64B.
+  Alternatively, the expression can be `IN` with up to 8 literals, each within 64B.
 * Or 1 `LIKE` comparison, with pattern within 64B. The pattern can only have wildcard (`%`)
   at the beginning or end of the pattern. So it's one of `%abc%`, `%abc`, `abc%` and `abc`.
   Wildcard in the middle like `a%bc` is not supported.
@@ -67,6 +67,7 @@ Examples:
 * Comparison (`>, >=, <, <=, ==, !=`) with same-typed literal is supported.
 * Up to 4 comparison leaf clause in an expression, with arbitrary logic (`AND, OR, NOT`)
   combination of results of these leaf clauses.
+* Alternatively, the expression can be `IN` with up to 4 literals.
 * No expression can be evaluated with `i128`, `decimal64` and `decimal128`.
   
 Examples:
@@ -79,6 +80,13 @@ Examples:
 (AND (> (var x) (fp32 1.5))
      (!= (var x) (fp32 3))
      (!= (var x) (fp32 4)))
+
+# Assume var x is of type fp64
+# WHERE x IN (0.5, 0.7)
+(IN (var x) (fp64 0.5) (fp64 0.7))
+# or
+(OR (== (var x) (fp64 0.5))
+    (== (var x) (fp64 0.7)))
 ```
 
 **Unsupported** Examples:

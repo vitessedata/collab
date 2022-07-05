@@ -1,7 +1,7 @@
 #ifndef SSSD_API_H
 #define SSSD_API_H
 
-#define LIBSSSD_ENGINE_VERSION 1
+#define LIBSSSD_ENGINE_VERSION 2
 
 #include <stdint.h>
 #include <stdbool.h>
