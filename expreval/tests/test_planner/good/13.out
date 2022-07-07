@@ -1,0 +1,37 @@
+-- sql --------
+select l_linestatus
+from lineitemdec where l_discount in (0, 0.1) and l_quantity = 2;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var l_linestatus))) (filter (and (IN (var l_discount) (int 0) (real 0.100000)) (== (var l_quantity) (int 2))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_linenumber i64v) (l_quantity dec64v 10 4) (l_extendedprice dec64v 10 4) (l_discount dec64v 10 4) (l_tax dec64v 10 4) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitemdec.xrg)))))
+
+
+-- result --------
+F
+O
+O
+F
+F
+F
+F
+F
+F
+O
+O
+O
+O
+O
+O
+F
+F
+F
+F
+O
+F
+O
+O
+F
+O
+F

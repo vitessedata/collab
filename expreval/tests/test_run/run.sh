@@ -4,7 +4,7 @@ rm -f $F
 [ -f ../src/$F ] && ln -s ../src/$F || ln -s ../$F
 
 mkdir -p out
-for index in {1..1067} q{1..6}; do
+for index in {1..1067} 1070 q{1..6}; do
     [ -f in/$index.plan ] || continue
     echo test $index
     ./$F in/$index.plan >& out/$index.out

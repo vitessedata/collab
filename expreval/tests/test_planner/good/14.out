@@ -1,0 +1,26 @@
+-- sql --------
+select l_returnflag, 
+	l_linestatus,
+	sum(l_quantity) as sum_qty, 
+	sum(l_extendedprice) as sum_base_price, 
+	sum(l_extendedprice * (1 - l_discount)) as sum_disc_price, 
+	sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge, 
+	sum(l_quantity),count(l_quantity), 
+	sum(l_extendedprice), count(l_extendedprice), 
+	sum(l_discount),count(l_discount), 
+	count(*) as count_order 
+from lineitemdec 
+where l_shipdate <= date '1998-12-01' - interval '112 day' 
+group by l_returnflag, l_linestatus;
+
+
+
+-- plan --------
+(plan (project (column (c0 (var gvar.0)) (c1 (var gvar.1)) (sum_qty (var gfunc.0)) (sum_base_price (var gfunc.1)) (sum_disc_price (var gfunc.2)) (sum_charge (var gfunc.3)) (c6 (var gfunc.0)) (c7 (var gfunc.4)) (c8 (var gfunc.1)) (c9 (var gfunc.5)) (c10 (var gfunc.6)) (c11 (var gfunc.7)) (count_order (var gfunc.8))) (groupby (bucket (var l_returnflag) (var l_linestatus)) (function (sum (var l_quantity)) (sum (var l_extendedprice)) (sum (var expr.1001)) (sum (* (var expr.1001) (var expr.1002))) (count (var l_quantity)) (count (var l_extendedprice)) (sum (var l_discount)) (count (var l_discount)) (count (int 1))) (symexpr (column (expr.1000 (- (int 1) (var l_discount))) (expr.1001 (* (var l_extendedprice) (var expr.1000))) (expr.1002 (+ (int 1) (var l_tax)))) (filter (<= (var l_shipdate) (- (date 1998-12-01) (interval "112 day"))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_linenumber i64v) (l_quantity dec64v 10 4) (l_extendedprice dec64v 10 4) (l_discount dec64v 10 4) (l_tax dec64v 10 4) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitemdec.xrg)))))))
+
+
+-- result --------
+N|O|73962.0000|74177309.2000|70512214.05270000|73308018.638225000000|73962.0000|2898|74177309.2000|2898|143.8900|2898|2898
+N|F|1041.0000|1041301.0700|999060.89800000|1036450.802280000000|1041.0000|38|1041301.0700|38|1.6300|38|38
+A|F|37474.0000|37569624.6400|35676192.09700000|37101416.222424000000|37474.0000|1478|37569624.6400|1478|75.1800|1478|1478
+R|F|36511.0000|36570841.2400|34738472.87580000|36169060.112193000000|36511.0000|1457|36570841.2400|1457|72.8900|1457|1457

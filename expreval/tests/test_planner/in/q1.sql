@@ -8,6 +8,6 @@ select l_returnflag,
 	sum(l_extendedprice) / count(l_extendedprice) /*avg(l_extendedprice)*/ as avg_price, 
 	sum(l_discount)/count(l_discount) /*(avg(l_discount)*/ as avg_disc, 
 	count(*) as count_order 
-from lineitem 
+from lineitem_800k 
 where l_shipdate <= date '1998-12-01' - interval '112 day' 
 group by l_returnflag, l_linestatus;

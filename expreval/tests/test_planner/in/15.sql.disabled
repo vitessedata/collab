@@ -1,0 +1,11 @@
+-- query with syntax error 
+-- comma before FROM 
+SELECT
+  l_returnflag, 
+  l_linestatus, 
+  l_orderkey , 
+FROM lineitem
+WHERE
+  30 <= l_orderkey
+  AND l_orderkey <= 40
+;

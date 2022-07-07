@@ -6,22 +6,25 @@
 ;; 2 | 2
 ;; 2 | 3
 ;; 2 | 4
+;;   | 10
 ;;(5 rows)
 ;;
-;;cktan=# select i, count(j) from t group by i;
-;; i | count
-;;---+-------
-;; 2 |     3
-;; 1 |     1
+;;cktan=# select i, count(j), sum(j) from t group by i;
+;; i | count | sum
+;;---+-------+-----
+;; 2 |     3 |   9
+;; 1 |     1 |   1
+;;   |     1 |  10
 ;;(2 rows)
 ;;
 
-(plan 
-   (project (column (c0 (var gvar.0)) 
-                    (c1 (var gfunc.0))) 
-            (groupby (bucket (var i)) 
-                     (function (count (var j))) 
-                     (scan (symtab (i i8v) (j i8v)) 
+(plan
+   (project (column (c0 (var gvar.0))
+                    (c1 (var gfunc.0))
+                    (c2 (var gfunc.1)))
+            (groupby (bucket (var i))
+                     (function (count (var j)) (sum (var j)))
+                     (scan (symtab (i i8v) (j i8v))
 	                   (path t1067.xrg))
             )
    )

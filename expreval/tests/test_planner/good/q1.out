@@ -9,17 +9,18 @@ select l_returnflag,
 	sum(l_extendedprice) / count(l_extendedprice) /*avg(l_extendedprice)*/ as avg_price, 
 	sum(l_discount)/count(l_discount) /*(avg(l_discount)*/ as avg_disc, 
 	count(*) as count_order 
-from lineitem 
+from lineitem_800k 
 where l_shipdate <= date '1998-12-01' - interval '112 day' 
 group by l_returnflag, l_linestatus;
 
 
 
 -- plan --------
-(plan (project (column (c0 (var gvar.0)) (c1 (var gvar.1)) (sum_qty (var gfunc.0)) (sum_base_price (var gfunc.1)) (sum_disc_price (var gfunc.2)) (sum_charge (var gfunc.3)) (avg_qty (/ (var gfunc.0) (var gfunc.4))) (avg_price (/ (var gfunc.1) (var gfunc.5))) (avg_disc (/ (var gfunc.6) (var gfunc.7))) (count_order (var gfunc.8))) (groupby (bucket (var l_returnflag) (var l_linestatus)) (function (sum (var l_quantity)) (sum (var l_extendedprice)) (sum (* (var l_extendedprice) (- (int 1) (var l_discount)))) (sum (* (* (var l_extendedprice) (- (int 1) (var l_discount))) (+ (int 1) (var l_tax)))) (count (var l_quantity)) (count (var l_extendedprice)) (sum (var l_discount)) (count (var l_discount)) (count (int 1))) (filter (<= (var l_shipdate) (- (date 1998-12-01) (interval "112 day"))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem.xrg))))))
+(plan (project (column (c0 (var gvar.0)) (c1 (var gvar.1)) (sum_qty (var gfunc.0)) (sum_base_price (var gfunc.1)) (sum_disc_price (var gfunc.2)) (sum_charge (var gfunc.3)) (avg_qty (/ (var gfunc.0) (var gfunc.4))) (avg_price (/ (var gfunc.1) (var gfunc.5))) (avg_disc (/ (var gfunc.6) (var gfunc.7))) (count_order (var gfunc.8))) (groupby (bucket (var l_returnflag) (var l_linestatus)) (function (sum (var l_quantity)) (sum (var l_extendedprice)) (sum (var expr.1001)) (sum (* (var expr.1001) (var expr.1002))) (count (var l_quantity)) (count (var l_extendedprice)) (sum (var l_discount)) (count (var l_discount)) (count (int 1))) (symexpr (column (expr.1000 (- (int 1) (var l_discount))) (expr.1001 (* (var l_extendedprice) (var expr.1000))) (expr.1002 (+ (int 1) (var l_tax)))) (filter (<= (var l_shipdate) (- (date 1998-12-01) (interval "112 day"))) (scan (symtab (l_orderkey i64v) (l_partkey i64v) (l_suppkey i64v) (l_lineitem i64v) (l_quantity fp64v) (l_extendedprice fp64v) (l_discount fp64v) (l_tax fp64v) (l_returnflag strv) (l_linestatus strv) (l_shipdate datev) (l_commitdate datev) (l_receiptdate datev) (l_shipinstruct strv) (l_shipmode strv) (l_comment strv)) (path lineitem_800k.xrg)))))))
 
 
 -- result --------
-N|O|2620.00|3835762.27|3651143.76|3799689.40|25.94|37977.84|0.05|101
-A|F|1350.00|1913270.38|1810322.04|1883811.54|25.96|36793.66|0.05|52
-R|F|1099.00|1556684.01|1473551.00|1523983.13|25.56|36201.95|0.05|43
+N|O|9789440.00|14667313457.88|13933343352.59|14490882365.33|25.55|38280.87|0.05|383150
+N|F|127228.00|190453659.68|180985728.61|188286739.67|25.25|37803.43|0.05|5038
+A|F|5024619.00|7532311957.22|7154740150.27|7441507863.11|25.55|38294.37|0.05|196695
+R|F|5037633.00|7548695442.75|7171874504.04|7458411721.54|25.52|38236.34|0.05|197422

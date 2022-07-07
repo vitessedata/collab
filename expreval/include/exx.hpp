@@ -24,6 +24,9 @@ private:
 void exx_init(const std::vector<std::string> &sssd_path);
 void exx_final();
 
+void exx_enable_sssd();
+void exx_disable_sssd();
+
 struct xrg_vector_t;
 
 // This function is called to emit results.
@@ -32,14 +35,21 @@ struct xrg_vector_t;
 using emitfn_t = std::function<void(const int nitem, const int nvalue,
                                     xrg_vector_t **value)>;
 
-// This function takes an array of tablenames, and returns
-// 1. a string containing the schema in json
-// 2. a list of xrg file paths to scan
+struct datasource_t {
+  std::string schema; // schema in json
+  std::vector<std::string> xrgpath;
+  std::vector<std::string> zmpath;
+};
+
+// This function takes an array of tablenames, and returns a datasource struct.
 using datasourcefn_t =
-    std::function<std::pair<std::string, std::vector<std::string>>(
-        const std::vector<std::string> &tablename)>;
+    std::function<datasource_t(const std::vector<std::string> &tablename)>;
 
 using emitplanfn_t = std::function<void(const std::string &plan)>;
 
+// Run a sql.
+// Call emitfn to output tuples.
+// Call datasourcefn to obtain schema and list of xrg files to scan.
+// Call emitplan when plan is ready.
 void exx_run(const std::string &sql, emitfn_t emitfn,
              datasourcefn_t datasourcefn, emitplanfn_t emitplan);
