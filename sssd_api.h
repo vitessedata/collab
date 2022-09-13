@@ -1,7 +1,7 @@
 #ifndef SSSD_API_H
 #define SSSD_API_H
 
-#define LIBSSSD_ENGINE_VERSION 3
+#define LIBSSSD_ENGINE_VERSION 2
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -222,9 +222,6 @@ const char* sssd_mountpoint(sssd_t sssd, int idx);
  *  Tasks are malloc-ed by caller, and pass to sssd.
  */
 int sssd_submit(sssd_t sssd, task_t* task, char* errmsg, int errsz);
-
-//returns #tasks queued on success, -1 otherwise.
-int sssd_submit_ex(sssd_t sssd, int ntask, task_t* task[], char* errmsg, int errsz);
 
 /**
  *  Await the completion of tasks. Returns #tasks completed, or -1
