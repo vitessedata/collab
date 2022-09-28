@@ -67,7 +67,7 @@ Examples:
 * Comparison (`>, >=, <, <=, ==, !=`) with same-typed literal is supported.
 * Up to 4 comparison leaf clause in an expression, with arbitrary logic (`AND, OR, NOT`)
   combination of results of these leaf clauses.
-* Alternatively, the expression can be `IN` with up to 4 literals.
+* Up to 8 literals can be evaluated in `IN` expression, and optional `NOT` is supported as expression root.
 * No expression can be evaluated with `i128`, `decimal64` and `decimal128`.
   
 Examples:
@@ -82,11 +82,14 @@ Examples:
      (!= (var x) (fp32 4)))
 
 # Assume var x is of type fp64
-# WHERE x IN (0.5, 0.7)
 (IN (var x) (fp64 0.5) (fp64 0.7))
-# or
-(OR (== (var x) (fp64 0.5))
-    (== (var x) (fp64 0.7)))
+
+# Assume var x is of type fp64
+(IN (var x) (fp64 0.5) (fp64 0.6) (fp64 0.7) (fp64 0.8) (fp64 0.9))
+
+# Assume var x is of type fp64
+(NOT (IN (var x) (fp64 0.5) (fp64 0.6) (fp64 0.7) (fp64 0.8)
+         (fp64 0.9) (fp64 1.0) (fp64 1.1) (fp64 1.2)))
 ```
 
 **Unsupported** Examples:
@@ -94,6 +97,11 @@ Examples:
 # Assume var x is of type i32
 (> (* (var x) (i32 3)) (i32 100))
 # multiply is not supported
+
+# Assume var x is of type i32
+(OR (IN (var x) (i32 3) (i32 4)),
+    (EQ (var x), (i32 1)))
+# do not support logic operation other than NOT over IN operator
 ```
 
 ## Casting Variable
