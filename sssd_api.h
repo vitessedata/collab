@@ -1,7 +1,7 @@
 #ifndef SSSD_API_H
 #define SSSD_API_H
 
-#define LIBSSSD_ENGINE_VERSION 2
+#define LIBSSSD_ENGINE_VERSION 3
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -76,7 +76,6 @@ extern const char* expr_type_str[];
 class expr_t {
    public:
     expr_type_t type;
-    // std::vector<std::unique_ptr<expr_t>> arg;
     std::vector<expr_t*> arg;
     virtual ~expr_t() = default;
 };
@@ -141,7 +140,6 @@ for field between 1 and 10 where field is an int32
                 (EXPR_LIT_FIELD)
                 (EXPR_LIT_I32 10)))
 
-
  */
 
 typedef enum {
@@ -171,7 +169,6 @@ class request_t {
 class read_request_t : public request_t {
    public:
     int32_t cno;
-    // std::unique_ptr<expr_t> filter;
     expr_t* filter;
 };
 class append_request_t : public request_t {
@@ -199,6 +196,14 @@ typedef struct task_t {
     std::unique_ptr<reply_t> reply;
 } task_t;
 typedef void* sssd_t;
+
+enum sssd_limits_e {
+    SSSD_LMT_CMP_NUM = 4,    /* max leaf comparisons (EQ, NE, LT, LE, GT, GE) supported
+                                for non-string field-literal comparison in expression */
+    SSSD_LMT_IN_CONSTS = 8,  /* max 8 constants for IN operator */
+    SSSD_LMT_STR_LENGTH = 64 /* max 64 char for string literals used in IN, EQ, NE and LIKE */
+};
+
 /**
  * Finalize
  */
@@ -222,7 +227,13 @@ const char* sssd_mountpoint(sssd_t sssd, int idx);
  *  Tasks are malloc-ed by caller, and pass to sssd.
  */
 int sssd_submit(sssd_t sssd, task_t* task, char* errmsg, int errsz);
+/**
+ *  Submit batch of tasks to sssd; returns 0 if all succussed, -1 if one or more failed.
+ *  The task will be queued to run in the future.
+ *  Tasks are malloc-ed by caller, and pass to sssd.
+ */
 
+int sssd_submit_ex(sssd_t sssd, int ntask, task_t* task[], char* errmsg, int errsz);
 /**
  *  Await the completion of tasks. Returns #tasks completed, or -1
  *  otherwise. This call is blocking if nonblocking == 0.
